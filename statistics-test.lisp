@@ -12,6 +12,8 @@
 (defparameter *even-length-numbers*
   (list 1 2 3 4 5 6))
 
+(defparameter *smart-numbers* (list 2 4 4 4 5 5 7 9))
+
 (define-test mean-test
   (loop for (expected population)
      in `((7/2 ,*even-length-numbers*)
@@ -31,10 +33,14 @@
   (assert-equality #'set-equal (list 1 3) (mode (list 1 3 1 3 1 3 1 2 3 4))))
 
 (define-test variance-test
-  (assert-equal 38/3 (variance (list 1 2 9))))
+  (assert-equal 4 (variance *smart-numbers*)))
 
 (define-test standard-deviation-test
-  (assert-equal (sqrt 38/3) (standard-deviation (list 1 2 9))))
+  (assert-eq 2.0 (standard-deviation *smart-numbers*)))
+
+(define-test standard-score-test
+  (let ((xs *smart-numbers*))
+    (assert-equal 1.0 (standard-score (+ (mean xs) (standard-deviation xs)) xs))))
 
 (defun run-statistics-tests ()
   (let ((lisp-unit:*print-errors* t)

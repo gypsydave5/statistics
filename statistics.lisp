@@ -1,6 +1,11 @@
 (defpackage :com.gypsydave5.statistics
   (:use #:common-lisp)
-  (:export #:mean #:mode #:median #:variance #:standard-deviation))
+  (:export #:mean
+           #:mode
+           #:median
+           #:variance
+           #:standard-deviation
+           #:standard-score))
 
 (in-package #:com.gypsydave5.statistics)
 
@@ -101,10 +106,14 @@
 
 (defun variance (xs)
   (let ((µ (mean xs)))
-    (/ (apply #'+ (mapcar #'(lambda (x) (square (- µ x))) xs))
-       (length xs))))
+    (- (/ (apply #'+ (mapcar #'square xs))
+          (length xs))
+       (square μ))))
 
 (defun standard-deviation (xs)
   (sqrt (variance xs)))
 
-(standard-deviation (list 1 2 9))
+(defun standard-score (x xs)
+  (let ((µ (mean xs))
+        (σ (standard-deviation xs)))
+    (/ (- x μ) σ)))
