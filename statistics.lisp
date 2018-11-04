@@ -1,6 +1,6 @@
 (defpackage :com.gypsydave5.statistics
   (:use #:common-lisp)
-  (:export #:mean #:mode #:median))
+  (:export #:mean #:mode #:median #:variance #:standard-deviation))
 
 (in-package #:com.gypsydave5.statistics)
 
@@ -95,3 +95,16 @@
 
 (apply #'interquartile-range *odd-length-numbers*)
 ;; => 5
+
+(defun square (x)
+  (* x x))
+
+(defun variance (xs)
+  (let ((µ (mean xs)))
+    (/ (apply #'+ (mapcar #'(lambda (x) (square (- µ x))) xs))
+       (length xs))))
+
+(defun standard-deviation (xs)
+  (sqrt (variance xs)))
+
+(standard-deviation (list 1 2 9))

@@ -30,6 +30,12 @@
   (assert-equal (list 10) (mode *odd-length-numbers*))
   (assert-equality #'set-equal (list 1 3) (mode (list 1 3 1 3 1 3 1 2 3 4))))
 
+(define-test variance-test
+  (assert-equal 38/3 (variance (list 1 2 9))))
+
+(define-test standard-deviation-test
+  (assert-equal (sqrt 38/3) (standard-deviation (list 1 2 9))))
+
 (defun run-statistics-tests ()
   (let ((lisp-unit:*print-errors* t)
         (lisp-unit:*print-failures* t))
