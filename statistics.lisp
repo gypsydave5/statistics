@@ -6,7 +6,8 @@
            #:variance
            #:standard-deviation
            #:standard-score
-           #:range))
+           #:range
+           #:interquartile-range))
 
 (in-package #:com.gypsydave5.statistics)
 
@@ -50,9 +51,6 @@
         (min (apply #'min ns)))
     (- max min)))
 
-(range (list 1 3 10 8))
-;; => 9
-
 (defun quantiles (q ns)
   (let ((sorted-ns (sort ns #'<)))
     (loop for k from 1 to (1- q)
@@ -68,25 +66,14 @@
 (defun quartiles (ns)
   (quantiles 4 ns))
 
-(defparameter *odd-length-numbers*
-  (list 3 3 6 7 7 10 10 10 11 13 30))
+(defun interquantile-range (q qm qn xs)
+  (let ((qs (quantiles q xs)))
+    (values (- (nth (1- qn) qs)
+               (nth (1- qm) qs))
+            qs)))
 
-(defparameter *even-length-numbers*
-  (list 1 2 3 4 5 6))
-
-(quartiles *even-length-numbers*)
-;; => (2 7/2 5)
-
-(quartiles *odd-length-numbers*)
-;; => (6 10 11)
-
-(defun interquartile-range (&rest ns)
-  (destructuring-bind (q1 _ q3) (quartiles ns)
-    (declare (ignore _))
-    (- q3 q1)))
-
-(apply #'interquartile-range *odd-length-numbers*)
-;; => 5
+(defun interquartile-range (xs)
+  (interquantile-range 4 1 3 xs))
 
 (defun square (x)
   (* x x))

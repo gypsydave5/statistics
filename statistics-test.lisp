@@ -38,6 +38,10 @@
 (define-test range-test
   (assert-equal 7 (range *smart-numbers*)))
 
+(define-test interquartile-range-test
+  (assert-equal 5 (interquartile-range *odd-length-numbers*))
+  (assert-equal (list 6 10 11) (nth-value 1 (interquartile-range *odd-length-numbers*))))
+
 (define-test variance-test
   (assert-equal 4 (variance *smart-numbers*)))
 
