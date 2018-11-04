@@ -30,7 +30,13 @@
 (define-test mode-test
   (assert-equality #'set-equal *even-length-numbers* (mode *even-length-numbers*))
   (assert-equal (list 10) (mode *odd-length-numbers*))
-  (assert-equality #'set-equal (list 1 3) (mode (list 1 3 1 3 1 3 1 2 3 4))))
+  (assert-equality #'set-equal (list 1 3) (mode (list 1 3 1 3 1 3 1 2 3 4)))
+  (assert-equal (list 'a) (mode (list 'a 'b 'c 'd 'e 'a)))
+  (assert-equal (list #\a) (mode (list #\a #\a #\b)))
+  (assert-equal (list "one") (mode (list "one" "two" "three" "one"))))
+
+(define-test range-test
+  (assert-equal 7 (range *smart-numbers*)))
 
 (define-test variance-test
   (assert-equal 4 (variance *smart-numbers*)))

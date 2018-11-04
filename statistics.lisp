@@ -5,7 +5,8 @@
            #:median
            #:variance
            #:standard-deviation
-           #:standard-score))
+           #:standard-score
+           #:range))
 
 (in-package #:com.gypsydave5.statistics)
 
@@ -27,11 +28,6 @@
                    (nth mid ns))))
       (t (nth (floor mid) ns)))))
 
-(median (list 5 1 3 2 4))
-;; => 3
-(median (list 1.0 2.0 4.0 5.0))
-;; => 3.0
-
 (defun mode (xs)
   "Calculates the modes of XS and returns them as well as the count."
   (let ((counts (make-hash-table :test 'equal))
@@ -48,22 +44,13 @@
                                              (setf modes (list value)))))) counts)
     (values modes max)))
 
-
-;; => (3 1)
-;;    4
-
-(mode (list'a 'b 'c 'd 'e 'a))
-;; => (A)
-;;    2
-
-
-(defun range (&rest ns)
+(defun range (ns)
   "Calculates the range of NS"
   (let ((max (apply #'max ns))
         (min (apply #'min ns)))
     (- max min)))
 
-(range 1 3 10 8)
+(range (list 1 3 10 8))
 ;; => 9
 
 (defun quantiles (q ns)
