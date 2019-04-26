@@ -41,8 +41,9 @@
             (setf (gethash x counts) 1))))
     (maphash #'(lambda (value count)
                  (cond ((= count max) (push value modes))
-                       ((> count max) (progn (setf max count)
-                                             (setf modes (list value)))))) counts)
+                       ((> count max)
+                        (setf max count)
+                        (setf modes (list value))))) counts)
     (values modes max)))
 
 (defun range (ns)
@@ -51,17 +52,20 @@
         (min (apply #'min ns)))
     (- max min)))
 
-(defun quantiles (q ns)
-  (let ((sorted-ns (sort ns #'<)))
+(defun quantiles (q p)
+  "Given a number of quantiles Q for a population P, returns a list of the
+ members of P at each quantile.i.e. for quartiles Q should be 4, and the
+ result will be (Q1 Q2 Q3)"
+  (let ((sorted-p (sort p #'<)))
     (loop for k from 1 to (1- q)
-       collect (quantile k q sorted-ns))))
+       collect (quantile k q sorted-p))))
 
 (defun quantile (k q sorted-ns)
   (let ((x (* k (/ (length sorted-ns) q))))
-        (if (integerp x)
-            (mean (list (nth (1- x) sorted-ns)
-                        (nth x sorted-ns)))
-            (nth (floor x) sorted-ns))))
+    (if (integerp x)
+        (mean (list (nth (1- x) sorted-ns)
+                    (nth x sorted-ns)))
+        (nth (floor x) sorted-ns))))
 
 (defun quartiles (ns)
   (quantiles 4 ns))
@@ -91,3 +95,6 @@
   (let ((µ (mean xs))
         (σ (standard-deviation xs)))
     (/ (- x μ) σ)))
+
+
+
